@@ -2,6 +2,11 @@
 
 Criptografia = escritura secreta 
 
+Buscamos CIA
+1. Confidentiality
+2. Integrity
+3. Availability
+
 ## Criptosistema
 
 Se usan dos funciones:

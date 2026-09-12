@@ -41,6 +41,8 @@ Algoritmos determinisitcos que expanden una entrada llamada *seed* y la salida *
 
 Intercambian la clave del OTP por la salida de un generador pseudoaleatorio
 
+![](attachments/Pasted%20image%2020260829125609.png)
+
 ## Pruebas de seguridad
 
 Prueban las caracteristicas de un criptosistema 
@@ -49,18 +51,7 @@ prueban a un algoritmo que representa un ataque, se repite muchas veces y lo que
 
 ### Prueba de indistinguibilidad
 
-Eavesdropping Indistinguishability test
-
-Lo unico que tiene acceso el atacante A del criptosistema $\Pi$ es al cifer text
-1. A genera $m_0$ y $m_1$ arbitrariamente
-2. se genera una clave $k$
-3. Se genera $b \in \{0, 1\}$
-4. A recibe $c = e_k(m_b)$
-5. A emite $b' \in \{0, 1\}$ 
-
-si $b = b'$ A gana
-
-si $P(b=b') = 0.5$ para todo adversario A, tiene secreto perfecto
+![](attachments/Pasted%20image%2020260829125023.png)
 ## Nivel de seguridad
 
 Esta dado por una variable que relaciona la cota en el poder de un adversario y la probabilidad de exito que tendra
