@@ -1,3 +1,8 @@
+---
+materia: cripto
+tipo: apuntes
+---
+
 # Cifrado
 
 > [!cite] Bibliografía de referencia
@@ -134,7 +139,7 @@ Permite calcular los bits de la transformacion por adelantado
 
 ![](attachments/Pasted%20image%2020260816192459.png)
 
-### Counter
+### Counter - CTR
 
 Utiliza un *contador* para generar secuencias de bits de clave
 
@@ -162,6 +167,81 @@ En la practica usamos funciones que parecen pseudoaleatorias.
 | ---------------------- | ------------------------------ |
 | CBC, OFB, CFB          | con IVs aleatorios             |
 | Counter                | con si no se repite (k, nonce) |
+
+## Comparacion de modos
+
+> [!NOTE]
+> Esto no esta en las slides de la Clase 02: se deriva de la formula de descifrado de cada modo.
+> Cayo en la Guia 4, asi que conviene tenerlo escrito.
+
+### Formulas de descifrado
+
+Todo lo demas sale de aca. En los modos que encadenan, $C_0 = IV$.
+
+| Modo | Cifrado | Descifrado |
+| ---- | ------- | ---------- |
+| ECB | $C_i = e_k(M_i)$ | $M_i = d_k(C_i)$ |
+| CBC | $C_i = e_k(M_i \oplus C_{i-1})$ | $M_i = d_k(C_i) \oplus C_{i-1}$ |
+| CFB | $C_i = M_i \oplus e_k(C_{i-1})$ | $M_i = C_i \oplus e_k(C_{i-1})$ |
+| OFB | $C_i = M_i \oplus O_i$, con $O_i = e_k(O_{i-1})$ y $O_0 = IV$ | $M_i = C_i \oplus O_i$ |
+| CTR | $C_i = M_i \oplus e_k(\text{nonce} \Vert i)$ | $M_i = C_i \oplus e_k(\text{nonce} \Vert i)$ |
+
+> [!IMPORTANT]
+> **OFB y CTR nunca usan $d_k$**. La secuencia de clave depende solo de $(k, IV)$ y de la posicion,
+> no del criptograma, asi que cifrar y descifrar son la misma operacion. Son criptosistemas de
+> **flujo** construidos sobre una primitiva de bloque. CBC en cambio consume $C_{i-1}$ al descifrar.
+>
+> De esta diferencia salen todas las comparaciones de abajo.
+
+### Propagacion de errores
+
+Hay que separar dos tipos de error de transmision, porque dan resultados opuestos.
+
+**Bits alterados** (se mantiene el largo). Un bit dado vuelta en $C_j$ afecta:
+
+| Modo | Alcance | Que pasa exactamente |
+| ---- | ------- | -------------------- |
+| ECB | 1 bloque | $M_j$ entero ilegible |
+| CBC | 2 bloques | $M_j$ entero ilegible, y en $M_{j+1}$ se da vuelta **exactamente el mismo bit** |
+| CFB | 2 bloques | en $M_j$ se da vuelta ese mismo bit, y $M_{j+1}$ queda entero ilegible |
+| OFB | 1 bit | en $M_j$ se da vuelta ese bit y nada mas |
+| CTR | 1 bit | en $M_j$ se da vuelta ese bit y nada mas |
+
+**Bits perdidos** (se pierde la sincronizacion):
+
+| Modo | Se recupera? |
+| ---- | ------------ |
+| ECB, CBC, CFB | Si, son **autosincronizantes**: el estado que necesita el descifrado esta en el criptograma mismo. Se pierden 1 o 2 bloques y despues vuelve a descifrar bien. Solo vale si la perdida es de bloques enteros; si se pierde una cantidad de bytes que no es multiplo del bloque, se pierde todo lo que sigue. |
+| OFB, CTR | No, nunca. La secuencia de clave esta atada a la posicion: perder un solo bit corre todo y el resto queda ilegible. |
+
+### Confidencialidad
+
+Todos son CPA-secure bajo las condiciones de la tabla de [[2_Cifrado#Seguridad de cifrado por bloques|mas arriba]] (menos ECB, que no lo es nunca). La diferencia real esta en **que tan grave es equivocarse con el IV**:
+
+| Modo | Si se repite el IV con la misma $k$ |
+| ---- | ----------------------------------- |
+| CBC | Dos mensajes con el mismo prefijo dan el mismo prefijo de criptograma. Se filtra hasta donde son iguales, bloque a bloque. Malo, pero acotado. |
+| OFB, CTR | **Catastrofico**: misma secuencia de clave, entonces $C \oplus C' = M \oplus M'$ y se filtran los dos textos claros. |
+
+> [!WARNING]
+> Lo de OFB y CTR es exactamente el problema de reusar la clave del [[2_Cifrado#One time pad (OTP)|OTP]].
+> Que esten construidos sobre AES no los salva: un $(k, IV)$ repetido los reduce a un OTP con clave
+> reusada.
+
+Ademas CBC pide un IV **aleatorio e impredecible**, no solo distinto. CTR se conforma con que no se
+repita el par $(k, \text{nonce})$ — por eso ahi si sirve un contador.
+
+> [!NOTE]
+> OFB tiene un problema propio que CTR no tiene: como $O_i = e_k(O_{i-1})$ itera una permutacion, la
+> secuencia de clave **cicla** en algun momento y ahi se repite. CTR no, porque el contador le
+> garantiza entradas distintas a $e_k$.
+
+> [!WARNING] Trampa de parcial
+> "Propaga menos errores" suena a ventaja, pero es justo lo que hace a OFB y CTR **maleables**: el
+> atacante da vuelta un bit del criptograma y da vuelta exactamente ese bit del texto claro, sin
+> romper nada mas. Es el ataque del sueldo con el que arranca [[3_MACs-cifrado-autenticado#Problema]].
+> Ningun modo de encadenamiento da integridad: para eso hace falta un MAC.
+
 
 ## DES - Data Encryption Standard
 

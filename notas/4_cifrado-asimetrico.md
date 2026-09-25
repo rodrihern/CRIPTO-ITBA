@@ -45,6 +45,7 @@ resolver cualquiera de estos 2 es un problema np-hard.
 >En la practica el canal por donde se transimten los mensajes tiene que ser autenticado. Osea esta todo bien si un atacante puede leer esos mensajes, pero esta todo mal si el atacante puede alterar esos mensajes (man in the middle).
 
 ## Criptosistema asimetrico
+
 ![](attachments/Pasted%20image%2020260912191537.png)
 
 Se encripta con la **clave publica** y se descifra con la **clave privada**
@@ -62,6 +63,11 @@ Se encripta con la **clave publica** y se descifra con la **clave privada**
 
 Luego **no** es el RSA que se usa en la practica
 
+si se pudiera factorizar n seria un problema porque conociendo p y q podemos obtener 
+$$
+\phi(n) = (p-1)\cdot(q-1)
+$$
+luego pudiendo obtener $d$ (inverso multiplicativo de $e$ mod $\phi(n)$)
 
 ## PKCS 1 V1.5
 

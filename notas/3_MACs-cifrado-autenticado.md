@@ -19,7 +19,7 @@ $$
 En la imagen vemos el ejemplo de como cambiamos el cifer text de $2EDF79 \rightarrow 2F69F0$ para que cuando lo desencripten, el sueldo mio quede 100000.
 
 Si tiene este problema/vulnerabilidad se dice que el criptosistema es **maleable**
-## Ataque de texto cifrado escogido
+## Ataque de texto cifrado escogido - CCA
 
 Hagamos una nueva prueba de seguridad para tratar mitigar este problema
 
@@ -143,9 +143,12 @@ de golpe aparecio un problema que no podiamos resolver
 
 ![](attachments/Pasted%20image%2020260905205529.png)
 
-1. **Cifrar y autenticar:** La primera es la que no es segura porque como que le estamos dando 2 puertas de entrada al mensaje. t brinda informacion del mensaje
-2. **Autenticar, luego cifrar**: Puede ser seguro, no hay una prueba general.
-3. **Cifrar, luego autenticar**: tiene una prueba general
+
+>[!IMPORTANT]
+>1. **Cifrar y autenticar:** La primera es la que no es segura porque como que le estamos dando 2 puertas de entrada al mensaje. t brinda informacion del mensaje
+> 2. **Autenticar, luego cifrar**: Puede ser seguro, **no** hay una prueba general.
+> 3. **Cifrar, luego autenticar**: tiene una prueba general para claves $k_1$, $k_2$ independientes
+
 
 `ssh` utiliza el segundo de una forma que es segura. Si hiciesemos `ssh` hoy usariamos el 3ro xd.
 
