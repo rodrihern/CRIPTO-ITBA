@@ -13,9 +13,25 @@ def vigenere_encrypt(plain_text, key, verbose=False):
 def vigenere_decrypt(cipher_text, key, verbose=False):
     return apply_key(cipher_text, key, -1, verbose)
 
+def gcd(a, b):
+    if a == 0: 
+        return b
+    
+    return gcd(b % a, a)
+
+
 def vigenere_estimate_key_length(cipher_text, verbose=False):
-    # Devuelve el largo de clave mas probable (int >= 1)
-    raise NotImplementedError("vigenere_estimate_key_length")
+    # quiero encontrar repeticiones de al menos 3 letras, para eso podria usar un hashset no?
+    estimated_length = 0
+    last_seen = {}
+    for i in range(len(cipher_text) - 2):
+        pattern = cipher_text[i:i+3]
+        if pattern in last_seen:
+            estimated_length = gcd(estimated_length, i - last_seen[pattern])
+        last_seen[pattern] = i
+
+    return estimated_length
+
 
 def vigenere_crack(cipher_text, key_length, verbose=False):
     # Adivina la clave de largo key_length y descifra con ella

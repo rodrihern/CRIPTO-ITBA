@@ -1,6 +1,23 @@
-# Instrucciones para Criptografia y Seguridad
+---
+materia: cripto
+tipo: referencia
+tags:
+  - cripto
+  - agents
+---
 
-Estas instrucciones aplican en `/Users/rodri/ITBA/cripto` cuando el usuario pida resolver ejercicios o editar los scripts de `codigos/`.
+# AGENTS.md · Cripto (Criptografía y Seguridad)
+
+Este es el **root de la materia** Criptografía y Seguridad del ITBA. Es un repo git propio y a la vez parte del vault de Obsidian de la facultad.
+
+- `teoria/` → PDFs de las clases de la cátedra (`Clase 01 - ...pdf`). **Solo lectura.**
+- `notas/` → apuntes de cada clase (`1_Introduccion.md`, `2_Cifrado.md`, ...). Las imágenes nuevas van en `notas/attachments/` (Obsidian las guarda en `./attachments` relativo a la nota).
+- `codigos/` → scripts de Python para cifrar, descifrar y atacar los cifrados que se ven en la materia.
+- `attachments/` → imágenes viejas de `1_Introduccion` y `2_Cifrado`. No agregar más acá.
+
+El `CLAUDE.md` del vault (`/Users/rodri/ITBA/CLAUDE.md`) sigue valiendo para todo lo que sea markdown: LaTeX, español, headers sin números, wikilinks reales, jerarquía de fuentes (`notas/` → `teoria/` → internet). Acá solo van las reglas propias de cripto, y **lo que esté acá manda sobre el CLAUDE.md del vault**.
+
+Estas instrucciones aplican cuando el usuario pida resolver ejercicios o editar los scripts de `codigos/`.
 
 No son las mismas convenciones que `../metodos`: aca cada cifrado tiene funciones separadas para cifrar y descifrar, y el script se puede importar desde otro.
 
