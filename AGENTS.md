@@ -27,7 +27,7 @@ Los scripts se corren desde `/Users/rodri/ITBA/cripto`.
 
 | Cifrado | Archivo | Funciones | Argumentos principales |
 |---|---|---|---|
-| Vigenere | `codigos/vigenere.py` | `vigenere_encrypt`, `vigenere_decrypt`, `vigenere_estimate_key_length`, `vigenere_crack` | `-t`, `-k`, `-d`, `-l`, `-v` |
+| Vigenere | `codigos/vigenere.py` | `vigenere_encrypt`, `vigenere_decrypt`, `vigenere_estimate_key_length`, `vigenere_crack` | `-t`, `-k`, `-d`, `-l`, `-L`, `-v` |
 
 ## Convenciones para codigo nuevo
 

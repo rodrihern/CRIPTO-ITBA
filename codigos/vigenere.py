@@ -4,8 +4,19 @@ import argparse
 TEXT = "ssuvp"
 KEY = None         # Optional: con -d y sin clave, se adivina la clave
 KEY_LENGTH = None  # Optional: con -d y sin clave, si queda en None se estima
+LANGUAGE = "es"    # Idioma del texto, para comparar frecuencias al adivinar la clave
 
 LETTERS = 26
+
+# Frecuencia (%) de cada letra, en orden a..z
+FREQUENCIES = {
+    # Tabla de la catedra (Clase 01, p. 23), sin la ñ (0,10)
+    "es": [10.60, 1.16, 4.85, 5.87, 13.11, 1.13, 1.40, 0.60, 7.16, 0.25, 0.11, 4.42, 3.11,
+           7.14, 8.23, 2.71, 0.74, 6.95, 8.47, 5.40, 4.34, 0.82, 0.12, 0.15, 0.79, 0.26],
+    # Fuente externa (no es de la catedra)
+    "en": [8.167, 1.492, 2.782, 4.253, 12.702, 2.228, 2.015, 6.094, 6.966, 0.153, 0.772, 4.025, 2.406,
+           6.749, 7.507, 1.929, 0.095, 5.987, 6.327, 9.056, 2.758, 0.978, 2.360, 0.150, 1.974, 0.074],
+}
 
 def vigenere_encrypt(plain_text, key, verbose=False):
     return apply_key(plain_text, key, 1, verbose)
@@ -33,9 +44,8 @@ def vigenere_estimate_key_length(cipher_text, verbose=False):
     return estimated_length
 
 
-def vigenere_crack(cipher_text, key_length, verbose=False):
-    # Adivina la clave de largo key_length y descifra con ella
-    # Devuelve (key, plain_text); para descifrar usar vigenere_decrypt
+def vigenere_crack(cipher_text, key_length, frequencies, verbose=False):
+    
     raise NotImplementedError("vigenere_crack")
 
 def apply_key(text, key, sign, verbose):
@@ -64,6 +74,7 @@ def parse_args():
     parser.add_argument("-k", "--key", default=KEY, help="Clave (solo letras). Con -d y sin -k, se adivina")
     parser.add_argument("-d", "--decrypt", action="store_true", help="Descifra el texto (por defecto cifra)")
     parser.add_argument("-l", "--key-length", type=int, default=KEY_LENGTH, help="Largo de la clave a adivinar (solo con -d y sin -k). Si no se pasa, se estima")
+    parser.add_argument("-L", "--language", default=LANGUAGE, choices=FREQUENCIES.keys(), help="Idioma del texto, para adivinar la clave (solo con -d y sin -k)")
     parser.add_argument("-v", "--verbose", action="store_true", help="Muestra la tabla letra por letra")
     args = parser.parse_args()
 
@@ -98,7 +109,7 @@ def main():
         key_length = args.key_length
         if key_length is None:
             key_length = vigenere_estimate_key_length(args.text, args.verbose)
-        key, result = vigenere_crack(args.text, key_length, args.verbose)
+        key, result = vigenere_crack(args.text, key_length, FREQUENCIES[args.language], args.verbose)
 
     if args.verbose:
         print()
