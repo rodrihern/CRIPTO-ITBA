@@ -1,4 +1,5 @@
 import argparse
+from collections import defaultdict
 
 # Define parameters
 TEXT = "ssuvp"
@@ -44,9 +45,26 @@ def vigenere_estimate_key_length(cipher_text, verbose=False):
     return estimated_length
 
 
-def vigenere_crack(cipher_text, key_length, frequencies, verbose=False):
-    
-    raise NotImplementedError("vigenere_crack")
+def vigenere_crack(cipher_text, key_length, language_freqs, verbose=False):
+    key = ""
+    for i in range(key_length):
+        freqs = defaultdict(int)
+        j = i
+        while j < len(cipher_text):
+            freqs[cipher_text[j]] += 1
+            j += key_length
+
+        key += caesar_crack(language_freqs, freqs)
+
+
+def caesar_crack(language_freqs, freqs):
+    # la idea es probar todas las posibles rotaciones y ver cual coincide mejor
+    return ""
+        
+
+
+
+
 
 def apply_key(text, key, sign, verbose):
     result = []
